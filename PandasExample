@@ -1,0 +1,40 @@
+import numpy as np
+import pandas as pd
+
+import statsmodels.api as sm  #(To access mtcars dataset)
+mtcars = sm.datasets.get_rdataset("mtcars", "datasets", cache=True).data
+
+mtcars.iloc[1:4, 2:3] = np.NaN
+
+mtcars.iloc[1:4, 3:4] = "NA"
+
+mtcars.iloc[1:4, 4:5] = ""
+
+mtcars["None_col"] = None
+
+mtcars.head()
+
+# Detect NaN and None with df.isnull() or df.isna()
+
+null = pd.isnull(mtcars)
+null.head()
+
+# Count the total number of missing values
+
+pd.isnull(mtcars).sum().sum()
+
+# Detect a list of missing values with df.isin()
+
+missing_vals = ["NA", "", None, np.NaN]
+missing = mtcars.isin(missing_vals)
+missing.head()
+
+# Fill null values (NaN and None) with a given value:
+
+mtcars.fillna(0).head()
+
+# Fill a list of missing values with a given value:
+
+missing_vals = ["NA", "", None, np.NaN]
+missing = mtcars.isin(missing_vals)      # Detect missing vals
+mtcars.mask(missing, "missing").head()   # Fill missing with df.mask()
